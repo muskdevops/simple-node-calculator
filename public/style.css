@@ -1,0 +1,295 @@
+/* ============================================================
+   AZURE·CALC MK-1 — a retro desk calculator rendered in CSS
+   Palette:
+     --case      #4A4E42  olive-plastic chassis
+     --case-hi   #5C6152  bevel highlight
+     --case-lo   #34372E  bevel shadow
+     --screen-bg #C4D6A0  LCD yellow-green
+     --ink       #2B3B1E  LCD segment ink
+     --key-num   #E9E4D6  ivory number keys
+     --key-func  #B7B0A0  stone function keys
+     --key-op    #C08A2E  mustard operator keys
+     --key-eq    #355E3B  forest green equals key
+     --key-clear #A23E33  brick-red (used sparingly, on AC label ring)
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+:root {
+  --case: #4A4E42;
+  --case-hi: #5C6152;
+  --case-lo: #34372E;
+  --screen-bg: #C4D6A0;
+  --ink: #2B3B1E;
+  --ink-dim: rgba(43, 59, 30, 0.22);
+  --key-num: #E9E4D6;
+  --key-func: #B7B0A0;
+  --key-op: #C08A2E;
+  --key-eq: #355E3B;
+  --key-clear-ring: #A23E33;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background:
+    radial-gradient(ellipse 900px 500px at 50% 15%, #45473e 0%, #2c2e27 55%, #1c1d18 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow-x: hidden;
+}
+
+.desk {
+  perspective: 1400px;
+}
+
+@keyframes settle-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.calculator {
+  width: min(360px, 90vw);
+  background: linear-gradient(155deg, var(--case-hi) 0%, var(--case) 22%, var(--case) 78%, var(--case-lo) 100%);
+  border-radius: 22px;
+  padding: 18px 16px 22px;
+  box-shadow:
+    0 2px 0 var(--case-hi) inset,
+    0 -3px 0 rgba(0,0,0,0.25) inset,
+    0 30px 60px -20px rgba(0,0,0,0.65),
+    0 10px 20px -8px rgba(0,0,0,0.5);
+  animation: settle-in 0.55s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+/* ---------- Top bezel: nameplate + solar strip ---------- */
+
+.top-bezel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px 14px;
+}
+
+.nameplate {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #DCD7C4;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.nameplate .model {
+  color: var(--key-op);
+}
+
+.solar-strip {
+  display: flex;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  background: linear-gradient(160deg, #1c2a3d, #101825);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.solar-strip span {
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(180deg, #3a6fa8, #23425e);
+  border-radius: 0.5px;
+}
+
+/* ---------- Screen ---------- */
+
+.screen {
+  background: linear-gradient(180deg, #23251f, #181914);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5) inset, 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.screen-inner {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 3px, rgba(0,0,0,0.06) 4px) repeat-y,
+    linear-gradient(100deg, #CFE0AE 0%, var(--screen-bg) 45%, #B9CC93 100%);
+  background-size: 100% 4px, 100% 100%;
+  border-radius: 6px;
+  padding: 14px 16px 10px;
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+.screen-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 140% 90% at 30% -10%, rgba(255,255,255,0.35), transparent 60%);
+  pointer-events: none;
+}
+
+.expression {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--ink);
+  opacity: 0.55;
+  text-align: right;
+  height: 16px;
+  letter-spacing: 0.02em;
+}
+
+.result {
+  font-family: 'VT323', monospace;
+  font-size: clamp(38px, 11vw, 46px);
+  line-height: 1;
+  color: var(--ink);
+  text-align: right;
+  text-shadow: 0 0 1px var(--ink-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.08s ease;
+}
+
+.result.flicker {
+  animation: lcd-flicker 0.22s steps(2, end);
+}
+
+@keyframes lcd-flicker {
+  0%   { opacity: 1; }
+  35%  { opacity: 0.4; }
+  70%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* ---------- Keypad ---------- */
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "ac  pm  pc  div"
+    "n7  n8  n9  mul"
+    "n4  n5  n6  sub"
+    "n1  n2  n3  add"
+    "bk  n0  dot eq";
+  gap: 9px;
+}
+
+.key {
+  appearance: none;
+  border: none;
+  border-radius: 12px;
+  height: 52px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.06s ease, box-shadow 0.06s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key:focus-visible {
+  outline: 2px solid #E9E4D6;
+  outline-offset: 2px;
+}
+
+.key--num {
+  background: linear-gradient(180deg, #F4F0E4 0%, var(--key-num) 55%, #D9D3C2 100%);
+  color: #33322B;
+  box-shadow:
+    0 3px 0 #B6AF98,
+    0 5px 8px rgba(0,0,0,0.35);
+}
+
+.key--func {
+  background: linear-gradient(180deg, #C6C0AF 0%, var(--key-func) 55%, #9A9484 100%);
+  color: #2E2D27;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow:
+    0 3px 0 #837D6E,
+    0 5px 8px rgba(0,0,0,0.35);
+}
+
+.key[data-action="clear"] {
+  box-shadow:
+    0 3px 0 #837D6E,
+    0 5px 8px rgba(0,0,0,0.35),
+    0 0 0 1.5px var(--key-clear-ring) inset;
+}
+
+.key--op {
+  background: linear-gradient(180deg, #D9A24A 0%, var(--key-op) 55%, #9C6A1F 100%);
+  color: #2E1E05;
+  font-size: 20px;
+  box-shadow:
+    0 3px 0 #7E5518,
+    0 5px 8px rgba(0,0,0,0.35);
+}
+
+.key--eq {
+  background: linear-gradient(180deg, #4C7A54 0%, var(--key-eq) 55%, #223F27 100%);
+  color: #E9F2E2;
+  font-size: 22px;
+  box-shadow:
+    0 3px 0 #1B301E,
+    0 5px 8px rgba(0,0,0,0.35);
+}
+
+.key:active,
+.key.pressed {
+  transform: translateY(3px);
+}
+
+.key--num:active, .key--num.pressed {
+  box-shadow: 0 0 0 #B6AF98, 0 2px 4px rgba(0,0,0,0.3);
+}
+.key--func:active, .key--func.pressed {
+  box-shadow: 0 0 0 #837D6E, 0 2px 4px rgba(0,0,0,0.3);
+}
+.key--op:active, .key--op.pressed {
+  box-shadow: 0 0 0 #7E5518, 0 2px 4px rgba(0,0,0,0.3);
+}
+.key--eq:active, .key--eq.pressed {
+  box-shadow: 0 0 0 #1B301E, 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.bottom-label {
+  margin-top: 16px;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+  color: #A9A392;
+  opacity: 0.6;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .calculator { animation: none; }
+  .result.flicker { animation: none; }
+  .key { transition: none; }
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 380px) {
+  .key { height: 48px; font-size: 16px; }
+  .result { font-size: clamp(32px, 12vw, 40px); }
+}

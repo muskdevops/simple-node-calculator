@@ -1,0 +1,12 @@
+{
+  "name": "azure-calc-mk1",
+  "version": "1.0.0",
+  "description": "A retro LCD desk calculator, deployed on Azure App Service",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

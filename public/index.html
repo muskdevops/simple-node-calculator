@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AZURE·CALC MK-1</title>
+<meta name="theme-color" content="#3f4338" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="desk">
+  <main class="calculator" role="group" aria-label="AZURE-CALC MK-1 calculator">
+
+    <div class="top-bezel">
+      <span class="nameplate">AZURE&middot;CALC&nbsp;<span class="model">MK-1</span></span>
+      <div class="solar-strip" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-inner">
+        <div class="expression" id="expression" aria-hidden="true">&nbsp;</div>
+        <div class="result" id="result" aria-live="polite">0</div>
+      </div>
+    </div>
+
+    <div class="keypad" role="group" aria-label="Calculator keys">
+      <button class="key key--func" data-action="clear" style="grid-area: ac;">AC</button>
+      <button class="key key--func" data-action="negate" style="grid-area: pm;">&plusmn;</button>
+      <button class="key key--func" data-action="percent" style="grid-area: pc;">%</button>
+      <button class="key key--op" data-action="operator" data-op="&divide;" style="grid-area: div;">&divide;</button>
+
+      <button class="key key--num" data-action="number" data-num="7" style="grid-area: n7;">7</button>
+      <button class="key key--num" data-action="number" data-num="8" style="grid-area: n8;">8</button>
+      <button class="key key--num" data-action="number" data-num="9" style="grid-area: n9;">9</button>
+      <button class="key key--op" data-action="operator" data-op="&times;" style="grid-area: mul;">&times;</button>
+
+      <button class="key key--num" data-action="number" data-num="4" style="grid-area: n4;">4</button>
+      <button class="key key--num" data-action="number" data-num="5" style="grid-area: n5;">5</button>
+      <button class="key key--num" data-action="number" data-num="6" style="grid-area: n6;">6</button>
+      <button class="key key--op" data-action="operator" data-op="&minus;" style="grid-area: sub;">&minus;</button>
+
+      <button class="key key--num" data-action="number" data-num="1" style="grid-area: n1;">1</button>
+      <button class="key key--num" data-action="number" data-num="2" style="grid-area: n2;">2</button>
+      <button class="key key--num" data-action="number" data-num="3" style="grid-area: n3;">3</button>
+      <button class="key key--op" data-action="operator" data-op="+" style="grid-area: add;">+</button>
+
+      <button class="key key--func" data-action="backspace" style="grid-area: bk;">&larr;</button>
+      <button class="key key--num" data-action="number" data-num="0" style="grid-area: n0;">0</button>
+      <button class="key key--num" data-action="decimal" style="grid-area: dot;">.</button>
+      <button class="key key--eq" data-action="equals" style="grid-area: eq;">=</button>
+    </div>
+
+    <div class="bottom-label">Deployed on Azure App Service &middot; Mairaj Khan</div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
